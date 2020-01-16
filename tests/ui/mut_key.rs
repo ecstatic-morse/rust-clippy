@@ -29,7 +29,18 @@ fn should_not_take_this_arg(m: &mut HashMap<Key, usize>, _n: usize) -> HashSet<K
     m.keys().cloned().collect()
 }
 
-fn this_is_ok(m: &mut HashMap<usize, Key>) {}
+fn this_is_ok(_m: &mut HashMap<usize, Key>) {}
+
+#[allow(unused)]
+trait Trait {
+    type AssociatedType;
+
+    fn trait_fn(&self, set: std::collections::HashSet<Self::AssociatedType>);
+}
+
+pub fn generics_are_ok_too<K, S: std::hash::BuildHasher>(_m: &mut HashSet<K, S>) {
+    // nothing to see here, move along
+}
 
 fn main() {
     let _ = should_not_take_this_arg(&mut HashMap::new(), 1);

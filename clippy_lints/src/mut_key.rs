@@ -104,7 +104,9 @@ fn check_ty<'a, 'tcx>(cx: &LateContext<'a, 'tcx>, span: Span, ty: Ty<'tcx>) {
         {
             let key_type = concrete_type(substs.type_at(0));
             if let Some(key_type) = key_type {
-                if !key_type.is_freeze(cx.tcx, cx.param_env, span) {
+                if !key_type.is_freeze(cx.tcx, cx.param_env, span)
+                    && cx.tcx.layout_of(cx.param_env.and(key_type)).is_ok()
+                {
                     span_lint(cx, MUTABLE_KEY_TYPE, span, "mutable key type");
                 }
             }
